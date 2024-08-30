@@ -33,7 +33,7 @@ constexpr App::LogType kLogType = App::LogType::kSerial;
 HAApp s_app(HAApp::Options(kManufacturer, kModel,
                            WifiApp::Options()
                                .withSoftwareName(kSoftware)
-                               .withDefaultDeviceName("rooml33")
+                               .withDefaultDeviceName("boiler")
 #if defined(LOG_UDP) && defined(LOG_UDP_ADDRESS)
                                .withUdpLogHost(IPAddress(LOG_UDP_ADDRESS))
 
@@ -72,7 +72,6 @@ class WaterCheck : public Module {
   HADependencies m_dependencies;
   VariableGroup& m_vg;
   DIn m_din;
-  OledDisplayRing* m_oled = nullptr;
 };
 
 constexpr unsigned kCfgSet = VariableBase::Flags::kConfig | VariableBase::Flags::kSettable;
@@ -93,7 +92,7 @@ WaterCheck::WaterCheck(uint8_t pin, HAApp* app_, VariableGroup& vg)
           });
       s_oled.addDisplayFn([this]() {
         if (!haveWater()) {
-          m_oled->display("Fill boiler tank.");
+          s_oled.display("Fill boiler tank.");
         }
       });
     }
