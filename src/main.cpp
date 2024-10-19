@@ -1,10 +1,6 @@
 #include <Arduino.h>
 #include <LittleFS.h>
 #include <WiFiClientSecure.h>
-
-#include <algorithm>
-#include <cstring>
-
 #include <og3/blink_led.h>
 #include <og3/constants.h>
 #include <og3/din.h>
@@ -14,6 +10,9 @@
 #include <og3/shtc3.h>
 #include <og3/units.h>
 #include <og3/variable.h>
+
+#include <algorithm>
+#include <cstring>
 
 #define VERSION "0.8.0"
 
@@ -26,8 +25,8 @@ static const char kSoftware[] = "Boiler v" VERSION;
 #if defined(LOG_UDP) && defined(LOG_UDP_ADDRESS)
 constexpr App::LogType kLogType = App::LogType::kUdp;
 #else
-// constexpr App::LogType kLogType = App::LogType::kNone;  // kSerial
-constexpr App::LogType kLogType = App::LogType::kSerial;
+constexpr App::LogType kLogType = App::LogType::kNone;
+// constexpr App::LogType kLogType = App::LogType::kSerial;
 #endif
 
 HAApp s_app(HAApp::Options(kManufacturer, kModel,
@@ -36,7 +35,6 @@ HAApp s_app(HAApp::Options(kManufacturer, kModel,
                                .withDefaultDeviceName("boiler")
 #if defined(LOG_UDP) && defined(LOG_UDP_ADDRESS)
                                .withUdpLogHost(IPAddress(LOG_UDP_ADDRESS))
-
 #endif
                                .withOta(OtaManager::Options(OTA_PASSWORD))
                                .withApp(App::Options().withLogType(kLogType))));
@@ -63,8 +61,7 @@ class WaterCheck : public Module {
  public:
   WaterCheck(uint8_t pin, HAApp* app_, VariableGroup& vg);
 
-  void read() { m_din.read();
-  }
+  void read() { m_din.read(); }
   bool haveWater() const { return m_din.isHigh(); }
 
  private:
@@ -80,8 +77,8 @@ WaterCheck::WaterCheck(uint8_t pin, HAApp* app_, VariableGroup& vg)
     : Module("boiler", &app_->module_system()),
       m_app(app_),
       m_vg(vg),
-      m_din("boiler", &m_app->module_system(), pin, "boiler has water", m_vg, true/*publish*/,
-	    true/*invert*/) {
+      m_din("boiler", &m_app->module_system(), pin, "boiler has water", m_vg, true /*publish*/,
+            true /*invert*/) {
   setDependencies(&m_dependencies);
   add_init_fn([this]() {
     if (m_dependencies.ok()) {
@@ -119,7 +116,7 @@ class Monitor : public Module {
         snprintf(text, sizeof(text), "%s %.1fC %.1fRH", m_water.haveWater() ? "OK" : "EMPTY!",
                  m_shtc3.temperature(), m_shtc3.humidity());
         s_oled.display(text);
-	log().log(text);
+        log().log(text);
       });
       m_app->config().read_config(m_vg);
     });
