@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <cstring>
 
-#define VERSION "0.8.0"
+#define VERSION "0.8.1"
 
 namespace og3 {
 
