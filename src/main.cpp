@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <cstring>
 
-#define VERSION "0.8.0"
+#define VERSION "0.8.1"
 
 namespace og3 {
 
@@ -159,6 +159,7 @@ void handleWebRoot(AsyncWebServerRequest* request) {
   html::writeTableInto(&s_html, s_monitor.vg());
   html::writeTableInto(&s_html, s_app.wifi_manager().variables());
   html::writeTableInto(&s_html, s_app.mqtt_manager().variables());
+  s_button_wifi_config.add_button(&s_html);
   s_button_mqtt_config.add_button(&s_html);
   s_button_app_status.add_button(&s_html);
   s_button_restart.add_button(&s_html);
