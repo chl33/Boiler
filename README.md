@@ -2,6 +2,7 @@
 
 ![Build Status](https://github.com/chl33/boiler/actions/workflows/platformio-run.yaml/badge.svg)
 
+Has your boiler ever shut down because it ran out of water?
 This is software for monitoring the water level of a boiler, using a PCBA based
  on an ESP32.
 It is based on the [og3](https://github.com/chl33/og3) C++ framework.
